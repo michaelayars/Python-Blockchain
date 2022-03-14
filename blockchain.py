@@ -27,14 +27,21 @@ class Blockchain:
     def __init__(self, public_key, node_id):
         # Genesis block is the very first block in our blockchain
         genesis_block = Block(0, '', [], 100, 0)
+        print(genesis_block)
         # Initializing our blockchain list
         self.chain = [genesis_block]
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        print(self.chain)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&")
         # Unhandled or Open transactions which are yet to be included in a block
         self.__open_transactions = []
         self.public_key = public_key
         self.__peer_nodes = set()
         self.node_id = node_id
         self.load_data()
+        print("***************************")
+        print(self.chain)
+        print("***************************")
 
     # This turns the chain attribute into a property with a getter (the method below) and a setter (@chain.setter)
     # chain[:] returns a copy so we only get a copy of the reference of the objects, so we can't directly change the value
@@ -170,8 +177,8 @@ class Blockchain:
                 print("Receiving")
                 print("Number of Peers",self.__peer_nodes)
                 for node in self.__peer_nodes:
-                    #url = 'http://{}/broadcast-transaction'.format(node)
-                    url = '{}/broadcast-transaction'.format(node)
+                    url = 'http://{}/broadcast-transaction'.format(node)
+                    #url = '{}/broadcast-transaction'.format(node)
                     print(url)
                     try:
                         response = requests.post(url, json={
@@ -190,6 +197,8 @@ class Blockchain:
     def mine_block(self):
         if self.public_key == None:
             return None
+        print('debugging')
+        print('test', self.__chain)
         last_block = self.__chain[-1]
         # Hash the last block. So, we can compare it to the stored hash value
         hashed_block = hash_block(last_block)
